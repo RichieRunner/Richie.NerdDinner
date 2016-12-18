@@ -34,7 +34,6 @@ namespace Richie.NerdDinner.Helpers
         public bool HasNextPage
         {
             get { return (PageIndex + 1 < TotalPages); }
-            //
         }
 
     }
