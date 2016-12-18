@@ -1,0 +1,14 @@
+﻿@*@model Richie.NerdDinner.Models.Dinner
+
+@{
+    ViewBag.Title = "Create";
+}*@
+
+<h2>Create</h2>
+
+@{ Html.RenderPartial("DinnerForm");}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

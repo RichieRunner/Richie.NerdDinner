@@ -1,0 +1,99 @@
+﻿@*@model IEnumerable<Richie.NerdDinner.Models.Dinner>*@
+
+@using System.Web.Mvc;
+
+@*@model ViewPage<Richie.NerdDinner.Helpers.PaginatedList<Richie.NerdDinner.Models.Dinner>>*@
+
+@model Richie.NerdDinner.Helpers.PaginatedList<Richie.NerdDinner.Models.Dinner>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.EventDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.HostedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.ContactPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Latitude)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Dinner.Longitude)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EventDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HostedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Longitude)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DinnerID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DinnerID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DinnerID })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        @Html.RouteLink("Previous", "UpcomingDinners", new { page = (Model.PageIndex - 1) })
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.RouteLink("Next", "UpcomingDinners", new { page = (Model.PageIndex + 1) })
+    }
+</div>
