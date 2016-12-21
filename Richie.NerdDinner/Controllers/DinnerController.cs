@@ -49,9 +49,16 @@ namespace Richie.NerdDinner.Controllers
 
 // EDIT-------------------------------------
 
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Dinner dinner = dinnerRepo.GetDinner(id);
+
+            if (!dinner.IsHostedBy(User.Identity.Name))
+            {
+                return View("InvalidOwner");
+            }
+
             LookUpItem lookupItem = lookupRepo.getCountries();
 
             var modelVM = new CountryViewModel(dinner) { Countries = lookupItem.DropDownList };
@@ -59,14 +66,19 @@ namespace Richie.NerdDinner.Controllers
             return View(modelVM);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Edit(int id, FormCollection formValues)
         {
             Dinner dinner = dinnerRepo.GetDinner(id);
+
+            if (!dinner.IsHostedBy(User.Identity.Name))
+            {
+                return View("InvalidOwner");
+            }
+
             LookUpItem lookupItem = lookupRepo.getCountries();
 
             var modelVM = new CountryViewModel(dinner) { Countries = lookupItem.DropDownList };
-
 
             if (TryUpdateModel(modelVM))
             {
@@ -81,10 +93,11 @@ namespace Richie.NerdDinner.Controllers
         }
 
 // CREATE-------------------------------------
-
+        
+        [Authorize]
         public ActionResult Create()
         {
-            Dinner dinner = new Dinner() { EventDate = DateTime.Now};
+            Dinner dinner = new Dinner() { EventDate = DateTime.Now, HostedBy = User.Identity.Name};
             LookUpItem lookupItem = lookupRepo.getCountries();
 
             var modelVM = new CountryViewModel(dinner) { Countries = lookupItem.DropDownList };
@@ -93,20 +106,20 @@ namespace Richie.NerdDinner.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Create(Dinner dinner)
         {
 
-            dinnerRepo.AddDinner2(dinner);
-            return RedirectToAction("Details", new { id = dinner.DinnerID });
+            //dinnerRepo.AddDinner2(dinner);
+            //return RedirectToAction("Details", new { id = dinner.DinnerID });
 
 
-            //if (ModelState.IsValid)
-            //{
-            //    dinnerRepo.AddDinner2(dinner);
-            //    return RedirectToAction("Details", new { id = dinner.DinnerID });
-            //}
-            //return View(dinner);
+            if (ModelState.IsValid)
+            {
+                dinnerRepo.AddDinner2(dinner);
+                return RedirectToAction("Details", new { id = dinner.DinnerID });
+            }
+            return View(dinner);
         }
 
     }
