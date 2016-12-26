@@ -22,5 +22,8 @@ namespace Richie.NerdDinner.Repository
         //void UpdateDinner2(Dinner dinner);
         IEnumerable<Country> getCountries();
 
+        IEnumerable<Dinner> GetData(out int totalRecords, string globalSearch);
+        IEnumerable<Dinner> GetData(out int totalRecords, string globalSearch, int? limitOffset, int? limitRowCount, string orderBy, bool desc);
+
     }
 }

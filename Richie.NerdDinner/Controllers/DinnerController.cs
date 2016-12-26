@@ -122,5 +122,11 @@ namespace Richie.NerdDinner.Controllers
             return View(dinner);
         }
 
+
+        public ActionResult MVCGrid()
+        {
+            return View();
+        }
+
     }
 }

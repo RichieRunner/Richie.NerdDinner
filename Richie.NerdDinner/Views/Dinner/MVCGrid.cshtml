@@ -1,0 +1,22 @@
+﻿@using Richie.NerdDinner.Models
+
+@{
+    ViewBag.Title = "MVCGrid";
+}
+
+<h2>MVCGrid</h2>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        @Html.Partial("_MVCGridToolbar", new MVCGridToolbarModel()
+        {
+            MVCGridName = "DinnerGrid",
+            PageSize = true,
+            ColumnVisibility = true,
+            Export = true,
+            GlobalSearch = true
+        })
+        @Html.MVCGrid("DinnerGrid")
+    </div>
+</div>

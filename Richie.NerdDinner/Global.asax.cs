@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Richie.NerdDinner.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,6 +28,8 @@ namespace Richie.NerdDinner
 
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+
         }
     }
 }

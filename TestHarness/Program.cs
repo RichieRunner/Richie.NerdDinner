@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MVCGrid.Models;
 
 using Richie.NerdDinner.Models;
 using Richie.NerdDinner.Repository;
@@ -15,7 +16,7 @@ namespace TestHarness
     {
         static void Main(string[] args)
         {
-            TestSkipTake();
+            TestMVCGrid();
         }
 
         static void TestGet()
@@ -53,5 +54,41 @@ namespace TestHarness
             var afterSecond = list.Take(3);
             Console.WriteLine(string.Join(",", afterSecond));
         }
+
+        static void TestIQueryable()
+        {
+            IDinnerRepository dinnerRepo = new DinnerRepository();
+            int totalRecords;
+            var dinners = dinnerRepo.GetData(out totalRecords, "e",null,null,"Title",true);
+
+            Console.WriteLine(totalRecords);
+
+            foreach (var dinner in dinners)
+            {
+                Console.WriteLine(dinner.Title);
+            }
+        }
+
+        static void TestMVCGrid()
+        {
+            IDinnerRepository dinnerRepo = new DinnerRepository();
+            int totalRecords;
+            var dinners = dinnerRepo.GetData(out totalRecords, "fall", null, null, "Title", true);
+
+            var queryResultDinner = new QueryResult<Dinner>()
+            {
+                Items = dinners,
+                TotalRecords = totalRecords
+            };
+
+            Console.WriteLine(queryResultDinner.TotalRecords.ToString());
+
+            foreach (var queryResult in queryResultDinner.Items.ToList())
+            {
+                Console.WriteLine(queryResult.Title);
+            }
+
+        }
+
     }
 }

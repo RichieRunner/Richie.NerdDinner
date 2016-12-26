@@ -21,6 +21,65 @@ namespace Richie.NerdDinner.Repository
             this.connectionString = ConfigurationManager.ConnectionStrings[connectionStringKey].ConnectionString;
         }
 
+        public IEnumerable<Dinner> GetData(out int totalRecords, string globalSearch)
+        {
+            IDinnerRepository repo = new DinnerRepository();
+            List<Dinner> listModels = repo.FindAllDinners().ToList();
+            //var result = new QueryResult<Player>();
+            var query = listModels.AsQueryable();
+            totalRecords = query.Count();
+
+            if (!String.IsNullOrWhiteSpace(globalSearch))
+            {
+                query = query.Where(p => p.Title.Contains(globalSearch));
+            }
+
+            return query.ToList();
+        }
+
+
+        public IEnumerable<Dinner> GetData(out int totalRecords, string globalSearch, int? limitOffset, int? limitRowCount, string orderBy, bool desc)
+        {
+            IDinnerRepository repo = new DinnerRepository();
+            List<Dinner> listModels = repo.FindAllDinners().ToList();
+            //var result = new QueryResult<Player>();
+            var query = listModels.AsQueryable();
+
+            if (!String.IsNullOrWhiteSpace(globalSearch))
+            {
+                query = query.Where(p => p.Title.Contains(globalSearch));
+            }
+
+            totalRecords = query.Count();
+
+            if (!String.IsNullOrWhiteSpace(orderBy))
+            {
+                switch (orderBy.ToLower())
+                {
+                    case "title":
+                        if (!desc)
+                            query = query.OrderBy(p => p.Title);
+                        else
+                            query = query.OrderBy(p => p.Title);
+                        break;
+                    case "hostedby":
+                        if (!desc)
+                            query = query.OrderBy(p => p.HostedBy);
+                        else
+                            query = query.OrderByDescending(p => p.HostedBy);
+                        break;
+                }
+            }
+
+            if (limitOffset.HasValue)
+            {
+                query = query.Skip(limitOffset.Value).Take(limitRowCount.Value);
+            }
+
+            return query.ToList();
+
+        }
+
         public IEnumerable<Dinner> FindAllDinners()
         {
             using (var connection = new SqlConnection(this.connectionString))
